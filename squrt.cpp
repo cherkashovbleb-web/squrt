@@ -7,37 +7,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "colors.h"
-#include "nRoots.h"
-
-
-#define eps 1e-6
-#define MAXLINE 1000
-#define ClearLine "\033[K"
-
-
-enum WillContinue{
-    NO_CONTINUE,
-    CONTINUE
-};
-
-
-
-enum QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* x2);
-enum QuantOfRoots Solve_With_Discriminant(double a, double b, double c, double* x1, double* x2);
-void Intro(void);
-void Write_Solutions(int, double, double);
-void Print_Input_Error(void);
-int Enter_Coeffs(double*, double*, double*);
-int Is_Zero(double);
-int Is_Equal(double, double);
-int Clear_Buffer(void);
-void String_Input(char*);
-void User_Comment(void);
-struct tm* Local_Time(void);
-enum WillContinue Solve_And_Write_Quadratic();
-void AI_Thinking(void);
-void Printf_With_Delay(const char*);
-int Str_To_Int(const char []);
+#include "squrt.h"
 
 
 #include "paint_graph.cpp"
@@ -62,7 +32,7 @@ int main(){
 
 
 /*ищет корни крвадратного уравнения*/
-enum QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* x2){
+QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* x2){
     //printf("ive started quad\n");
     assert(isfinite(a));
     assert(isfinite(b));
@@ -88,7 +58,7 @@ enum QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* 
 
 
 /*ищет корни квадратки через дискриминант*/
-enum QuantOfRoots Solve_With_Discriminant(double a, double b, double c, double* x1, double* x2){
+QuantOfRoots Solve_With_Discriminant(double a, double b, double c, double* x1, double* x2){
     //printf("im solving d\n");
     double d = b * b - 4 * a * c;
     if (Is_Zero(d / a)){ // a добавлено для увеличения точности : при небольших a (10^[-2 - -4]) дискриминант может получиться меньше eps, при делении на а он увеличится

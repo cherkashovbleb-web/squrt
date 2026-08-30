@@ -1,66 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 #include "colors.h"
-#include "nRoots.h"
-
-
-#define SizeX 153 /*только нечетный*/
-#define SizeY 43 /*только нечетный*/
-#define xStep 10
-#define yStep 5
-
-
-enum GraphLines{
-    GRAPH_SPACE = ' ',
-    GRAPH_ORDIN = '|',
-    GRAPH_ABSC = '-',
-    GRAPH_ORDIN_VECTOR = '^',
-    GRAPH_ABSC_VECTOR = '>',
-    GRAPH_NULL = '0',
-    GRAPH_ONE = '1',
-    GRAPH_TWO = '2',
-    GRAPH_THREE = '3', 
-    GRAPH_FOUR = '4',
-    GRAPH_FIVE = '5',
-    GRAPH_SIX = '6',
-    GRAPH_SEVEN = '7',
-    GRAPH_EIGHT = '8', 
-    GRAPH_NINE = '9',
-    GRAPH_MINUS = '-',
-    GRAPH_NAME_Y = 'y',
-    GRAPH_NAME_X = 'x',
-    GRAPH_ZERO_SLANT = '-',
-    GRAPH_INF_SLANT = '|',
-    GRAPH_POSITIVE_SLANT = '/',
-    GRAPH_NEGATIVE_SLANT = '\\',
-    GRAPH_POINT = '.',
-    GRAPH_STAR = '*',
-};
-
-
-struct GraphPixel{
-    enum GraphLines symbol = GRAPH_SPACE;
-    char color[8] = {0};
-};
-
-
-
-void Paint_One_Row_Of_Graph(GraphPixel*);
-void Define_Graph_Axes(GraphPixel [][SizeX]);
-void Define_Graph_By_Y(GraphPixel [][SizeX], double, double, double);
-void Define_Graph_By_X(GraphPixel [][SizeX], double, double, double);
-enum GraphLines Define_Graph_Line_Slant(double, double, int);
-void Paint_Graph(double ,double, double);
-void Print_GraphPixel(GraphPixel);
-enum QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* x2);
-void Define_One_X_Line(GraphPixel [][SizeX], int, GraphPixel);
-void Define_One_Y_Line(GraphPixel [][SizeX], int, GraphPixel);
-GraphLines Turn_Digit_To_GraphLines(int);
-void Print_GraphLine(GraphLines);
-void Graduate_Y(GraphPixel [][SizeX]);
-void Define_One_Y_Value(GraphPixel [][SizeX], int);
-void Graduate_X(GraphPixel [][SizeX]);
-void Define_One_X_Value(GraphPixel [][SizeX], int);
+#include "squrt.h"
+#include "paint_graph.h"
 
 
 
@@ -161,12 +103,13 @@ void Define_Graph_By_X(GraphPixel matr[][SizeX], double a, double b, double c){
 
 
 /*определяет угол наклона линии графика*/
-enum GraphLines Define_Graph_Line_Slant(double a, double b, int x){
+GraphLines Define_Graph_Line_Slant(double a, double b, int x){
     const double pi = M_PI;
     double angle = atan(2 * a * x + b) * 180.0 / pi;
     double inf_edge = 65;
     double flat_edge = 30;
-    if ((angle > -90 && angle < -inf_edge) || (angle >= inf_edge && angle < 90)){
+    const double unreachable_edge = 90;
+    if ((angle > -unreachable_edge && angle < -inf_edge) || (angle >= inf_edge && angle < unreachable_edge)){
         return GRAPH_INF_SLANT;
     }
     else if (angle >= -inf_edge && angle < -flat_edge){
@@ -213,7 +156,7 @@ void Define_One_Y_Value(GraphPixel matr[][SizeX], int row){
     int pos = 1;
     if (y != 0){
         while (y){
-            matr[row][SizeX / 2 - pos] = {.symbol = Turn_Digit_To_GraphLines(y % 10), .color = YELLOW};
+            matr[row][SizeX / 2 - pos] = {.symbol = (GraphLines)(y % 10 + '0'), .color = YELLOW};
             y /= 10;
             pos++;
         }
@@ -233,7 +176,7 @@ void Graduate_X(GraphPixel matr[][SizeX]){
 
 
 /*заполняет одно значение на оси ординат*/
-void Define_One_X_Value(GraphPixel matr[][SizeX], int col){
+void Define_One_X_Value(GraphPixel matr[][SizeX], int col, int is_root){
     int x = col - SizeX / 2;
     int is_negative = (x < 0);
     x = abs(x);
@@ -248,7 +191,7 @@ void Define_One_X_Value(GraphPixel matr[][SizeX], int col){
     int pos = ndigits / 2;
     while (x){
         if (col + pos < SizeX && col + pos >= 0){
-            matr[SizeY / 2 + 1][col + pos] = {.symbol = Turn_Digit_To_GraphLines(x % 10), .color = YELLOW};
+            matr[SizeY / 2 + 1][col + pos] = {.symbol = (GraphLines)(x % 10 + '0'), .color = YELLOW};
         }
         pos--;
         x /= 10;
@@ -256,24 +199,4 @@ void Define_One_X_Value(GraphPixel matr[][SizeX], int col){
     if (is_negative){
         matr[SizeY / 2 + 1][col + pos] = {.symbol = GRAPH_MINUS, .color = YELLOW};
     }
-}
-
-
-/*переводит цифру в GraphLines*/
-GraphLines Turn_Digit_To_GraphLines(int a){
-    switch(a){
-        case 0: return GRAPH_NULL;
-        case 1: return GRAPH_ONE;
-        case 2: return GRAPH_TWO;
-        case 3: return GRAPH_THREE;
-        case 4: return GRAPH_FOUR;
-        case 5: return GRAPH_FIVE;
-        case 6: return GRAPH_SIX;
-        case 7: return GRAPH_SEVEN;
-        case 8: return GRAPH_EIGHT;
-        case 9: return GRAPH_NINE;
-        default: printf("%d is not a digit ^(0_0)^\n", a);
-            break;
-    }
-    return GRAPH_STAR;
 }
