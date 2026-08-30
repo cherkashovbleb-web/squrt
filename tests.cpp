@@ -21,7 +21,7 @@ void Write_Test_OK(int tests_counter){
 
 
 /*вывод заваленного теста*/
-void Write_Test_Failed(int test_counter, TestCase test, double x1, double x2, int nRoots){
+void Write_Test_Failed(int test_counter, TestCase test, double x1, double x2, QuantOfRoots nRoots){
     printf("Test %d " RED "FAILED" NO_COLOR ": a = %.5lg, b = %.5lg, c = %.5lg\n"
            "EXPECTED: %d roots x1 = %.5lg, x2 = %.5lg"
            "GOT     : %d roots x1 = %.5lg, x2 = %.5lg", test_counter, test.a, test.b, test.c, test.nRootsref,
@@ -65,7 +65,6 @@ void Run_One_Test(int* tests_counter, TestCase test, int* counter_ok_tests){
 void Run_All_Tests(){
     int tests_counter = 0, counter_ok_tests = 0;
     double a = 0, b = 0, c = 0;
-    TestCase test = {};
     TestCase testsStreet[] = {{.a = 0, .b = 0, .c = 0, .nRootsref = INF_ROOTS},
                               {.a = 1., .b = 2.2, .c = 1.21, .nRootsref = ONE_ROOT, .x1ref = -1.1}, 
                               {.a = 2, .b = 0, .c = -8, .nRootsref = TWO_ROOTS, .x1ref = -2, .x2ref = 2}, 
@@ -80,9 +79,9 @@ void Run_All_Tests(){
     
     srand(Str_To_Int("meow")); //не больше 4 символов, иначе будет переполнение int
     
-    Run_Random_Tests(&tests_counter, &counter_ok_tests, ZERO_ROOTS, test);
-    Run_Random_Tests(&tests_counter, &counter_ok_tests, ONE_ROOT, test);
-    Run_Random_Tests(&tests_counter, &counter_ok_tests, TWO_ROOTS, test);
+    Run_Random_Tests(&tests_counter, &counter_ok_tests, ZERO_ROOTS);
+    Run_Random_Tests(&tests_counter, &counter_ok_tests, ONE_ROOT);
+    Run_Random_Tests(&tests_counter, &counter_ok_tests, TWO_ROOTS);
     char buffer[100] = {0};
     snprintf(buffer, 100, "from " YELLOW "%d" NO_COLOR " tests completly passed " GREEN "%d" NO_COLOR ", failed " RED "%d" NO_COLOR "\n",
            tests_counter, counter_ok_tests, tests_counter - counter_ok_tests);
@@ -91,7 +90,8 @@ void Run_All_Tests(){
 
 
 /*запускает рандомные тесты с 0, 1, 2 корнями*/
-void Run_Random_Tests(int* tests_counter, int* counter_ok_tests, enum QuantOfRoots nRoots, TestCase test){
+void Run_Random_Tests(int* tests_counter, int* counter_ok_tests, QuantOfRoots nRoots){
+    TestCase test = {};
     double min = -100.0, max = 100.0, positive_num = 0, x1 = 0;
     test.nRootsref = nRoots;
     for (int j = 0; j < Num_Tests; ++j){

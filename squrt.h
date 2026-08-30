@@ -2,7 +2,6 @@
 #define SQURT_H
 
 
-
 #define eps 1e-6
 #define MAXLINE 1000
 #define ClearLine "\033[K"

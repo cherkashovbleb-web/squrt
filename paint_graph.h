@@ -2,6 +2,7 @@
 #define PAINT_GRAPH_H
 #include "colors.h"
 
+
 #define SizeX 153 /*только нечетный*/
 #define SizeY 43 /*только нечетный*/
 #define xStep 10
@@ -27,7 +28,7 @@ enum GraphLines{
     GRAPH_MINUS = '-',
     GRAPH_NAME_Y = 'y',
     GRAPH_NAME_X = 'x',
-    GRAPH_ZERO_SLANT = '-',
+    GRAPH_ZERO_SLANT = '=',
     GRAPH_INF_SLANT = '|',
     GRAPH_POSITIVE_SLANT = '/',
     GRAPH_NEGATIVE_SLANT = '\\',
@@ -42,6 +43,7 @@ struct GraphPixel{
 };
 
 
+
 void Paint_One_Row_Of_Graph(GraphPixel*);
 void Define_Graph_Axes(GraphPixel [][SizeX]);
 void Define_Graph_By_Y(GraphPixel [][SizeX], double, double, double);
@@ -49,7 +51,6 @@ void Define_Graph_By_X(GraphPixel [][SizeX], double, double, double);
 GraphLines Define_Graph_Line_Slant(double, double, int);
 void Paint_Graph(double ,double, double);
 void Print_GraphPixel(GraphPixel);
-enum QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* x2);
 void Define_One_X_Line(GraphPixel [][SizeX], int, GraphPixel);
 void Define_One_Y_Line(GraphPixel [][SizeX], int, GraphPixel);
 void Print_GraphLine(GraphLines);
