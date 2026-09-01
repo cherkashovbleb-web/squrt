@@ -2,9 +2,7 @@
 #define TESTS_H
 
 
-/**
- * Number of random tests for every quantity of quadratic equation roots from 0 to 2
- */
+/** Number of random tests for every quantity of quadratic equation roots from 0 to 2*/
 #define Num_Tests 10000000
 
 
@@ -125,6 +123,13 @@ void Run_Random_Tests(int* tests_counter, int* counter_ok_tests, enum QuantOfRoo
  * \brief Sort po vozrastaniyu two given double numbers
  */
 void Sort_Nums(double* a, double* b);
+
+/**
+ * \brief Convert string to int
+ * 
+ * Perform string hashing with a base 256, since the ASCII characters table contains 256 symbols
+ */
+int Str_To_Int(const char []);
 
 /*TODO: check when a or b is NAN or INF*/
 

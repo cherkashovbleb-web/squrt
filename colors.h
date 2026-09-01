@@ -1,7 +1,7 @@
 #ifndef CONFIG
 #define CONFIG
 
-
+/**ANSI codes of colors\nNO_COLOR means clear formatting */
 #define RED "\e[0;31m"
 #define YELLOW "\e[0;33m"
 #define NO_COLOR "\e[0m"

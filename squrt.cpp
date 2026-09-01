@@ -61,7 +61,7 @@ QuantOfRoots Squrt_Solve(double a, double b, double c, double* x1, double* x2){
 QuantOfRoots Solve_With_Discriminant(double a, double b, double c, double* x1, double* x2){
     //printf("im solving d\n");
     double d = b * b - 4 * a * c;
-    if (Is_Zero(d / a)){ // a добавлено для увеличения точности : при небольших a (10^[-2 - -4]) дискриминант может получиться меньше eps, при делении на а он увеличится
+    if (Is_Zero(d / a)){ // a добавлено для увеличения точности : при небольших a (10^[-2 - -4]) дискриминант может получиться меньше EPS, при делении на а он увеличится
                          // и в дальнейшем при извелечении корня он станет больше, и разница между корнями станет значительной, опять же из-за небольшого а;
                          // при больших а даже относительно большой дискриминант (10^[-1 - -3]) может бsть получен очень неточно из-за погрешностей double, умноженных на 
                          // большие числа
@@ -127,7 +127,7 @@ void Print_Input_Error(){
 
 /*проверка на равенство 0*/
 int Is_Zero(double num){
-    return (fabs(num) < eps);
+    return (fabs(num) < EPS);
 }
 
 
@@ -204,7 +204,7 @@ int Clear_Buffer(){
 }
 
 
-/*запись в файл локального времени*/
+/*Определение локального времени*/
 struct tm* Local_Time(){
     time_t rawtime;
     struct tm *timeinfo;
@@ -249,7 +249,7 @@ void User_Comment(){
     Printf_With_Delay(YELLOW "Your username:" NO_COLOR " ");
     String_Input(username);
     if (comment[0] != '\0'){
-        strftime(time_repres, sizeof(time_repres), "%d.%m.%Y %H:%M GMT+5", Local_Time());
+        strftime(time_repres, sizeof(time_repres), "%d.%m.%Y %H:%M", Local_Time());
         fprintf(fp, "[%s]", time_repres);
         if (username[0] == '\0'){
             fprintf(fp, "\t<Anonymous>");
@@ -288,17 +288,4 @@ void Printf_With_Delay(const char* line){
             Sleep(30);
         }
     }
-}
-
-
-/*хэширует строку в int*/
-int Str_To_Int(const char str[]){
-    unsigned int size = 0;
-    while (str[++size] != '\0');
-    int hash = 0, power = 1;
-    for (int i = size - 1; i > -1; i--){
-        hash += str[i] * power;
-        power *= 256;
-    }
-    return hash;
 }

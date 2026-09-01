@@ -135,3 +135,16 @@ double Get_Rand(double min, double max){
 int Check_Root(double a, double b, double c, double x){
     return Is_Zero(a * x * x + b * x + c);
 }
+
+
+/*хэширует строку в int*/
+int Str_To_Int(const char str[]){
+    unsigned int size = 0;
+    while (str[++size] != '\0');
+    int hash = 0, power = 1;
+    for (int i = size - 1; i > -1; i--){
+        hash += str[i] * power;
+        power *= 256;
+    }
+    return hash;
+}
